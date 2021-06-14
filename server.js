@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
-const { debugPort } = require('process');
+const { debugPort, mainModule } = require('process');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -46,10 +46,36 @@ const db = mysql.createConnection(
                 'Update Employee Role',
                 'Update Employee Manager']
      }).then(function (res) {
-
+        main(res.dbOptions)
      })
     
     }
+
+  function main(menuOptions) {
+    switch (menuOptions){
+      case 'View All Employees':
+          viewAllEmployees();
+      break;
+      case 'View All Employees by Department':
+         viewAllEmplDepartment();
+      break;
+      case 'View all Employees By Manager':
+        viewAllEmplManager();
+      break;
+      case 'Add Employee':
+        addEmpl();
+      break;
+      case 'Remove Employee':
+        removeEmpl();
+      break;
+      case 'Update Employee Role':
+        updateEmplRole();
+      break;
+      case 'Update Employee Manager':
+        updateEmplManager();
+      break;
+    }
+  }
   
 
 app.get('/', (req, res) => {
