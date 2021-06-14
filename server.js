@@ -22,9 +22,29 @@ const db = mysql.createConnection(
     },
     console.log('Connected to the company database.')
   );
+
+  db.connect(function (err) {
+    if (err) throw err;
+
+    promptQuestions();
+  });
+
+  function promptQuestions() {
+    inquirer.prompt()([
+      { type: 'checkbox',
+      name: 'dbOptions',
+      message: 'What would you like to do?',
+      choices: ['View All Employees', 
+      'View All Employees by Department', 
+      'View all Employees By Manager' ,
+      'Add Employee',
+      'Remove Employee',
+      'Update Employee Role',
+      'Update Employee Manager']
+    } 
+    ])
+  }
   
-
-
 
 app.get('/', (req, res) => {
     res.json({
@@ -38,7 +58,7 @@ app.use((req, res) => {
   });
 
 
-  db.query(`SELECT * FROM candidates`, (err, rows) => {
+  db.query(`SELECT * FROM employees`, (err, rows) => {
     console.log(rows);
   });
 
