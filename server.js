@@ -3,6 +3,7 @@ const fs = require('fs');
 const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
+const { debugPort } = require('process');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -23,6 +24,8 @@ const db = mysql.createConnection(
     console.log('Connected to the company database.')
   );
 
+
+
   db.connect(function (err) {
     if (err) throw err;
 
@@ -30,20 +33,23 @@ const db = mysql.createConnection(
   });
 
   function promptQuestions() {
-    inquirer.prompt()([
-      { type: 'checkbox',
+    inquirer.prompt(
+      { 
+      type: 'checkbox',
       name: 'dbOptions',
       message: 'What would you like to do?',
       choices: ['View All Employees', 
-      'View All Employees by Department', 
-      'View all Employees By Manager' ,
-      'Add Employee',
-      'Remove Employee',
-      'Update Employee Role',
-      'Update Employee Manager']
-    } 
-    ])
-  }
+                'View All Employees by Department', 
+                'View all Employees By Manager' ,
+                'Add Employee',
+                'Remove Employee',
+                'Update Employee Role',
+                'Update Employee Manager']
+     }).then(function (res) {
+
+     })
+    
+    }
   
 
 app.get('/', (req, res) => {
@@ -52,25 +58,30 @@ app.get('/', (req, res) => {
     });
   });
 
-  // Default response for any other request (Not Found)
-app.use((req, res) => {
-    res.status(404).end();
-  });
+//   // Default response for any other request (Not Found)
+// app.use((req, res) => {
+//     res.status(404).end();
+//   });
 
 
-  db.query(`SELECT * FROM employees`, (err, rows) => {
-    console.log(rows);
-  });
+//   db.query(`SELECT * FROM employees`, (err, rows) => {
+//     console.log(rows);
+//   });
 
-  // GET a single candidate
-db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log(row);
-  });
+//   // GET a single candidate
+// db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log(row);
+//   });
 
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+function quitDb() {
+  db.end();
+  process.exit();
+}
+
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//   });
