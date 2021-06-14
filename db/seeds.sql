@@ -6,3 +6,7 @@ INSERT INTO employees (first_name, last_name, title, department, salary, manager
     ('Michael', 'Scott', 'Accountant', 'Finance', '125000', 'null'),
     ('Sarah', 'Lourd', 'Legal Team Lead', 'Legal', '250000', 'null'),
     ('Tom', 'Allen', 'Lawyer', 'Legal', '190000', 'Sarah Lourd');
+
+
+INSERT INTO department (name)
+VALUES ('Sales', 'Engineering', 'Finance', 'Legal');

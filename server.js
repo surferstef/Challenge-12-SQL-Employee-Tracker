@@ -36,11 +36,8 @@ const db = mysql.createConnection(
       if (err) {
         console.log(err);
       }
-      
       console.table(res);
     })
-
-
 
     promptQuestions();
   });
@@ -99,12 +96,64 @@ function viewAllEmployees() {
     if (err) {
       console.log(err);
     }
-
     console.table(res);
    // console.log(rows);
-    promptQuestions()
+    promptQuestions();
   })
 }
+
+// function viewAllEmplDepartment() {
+//   db.query('SELECT *')
+//   connection.query("SELECT * from department", function (error, res) {
+//     showdepartments = res.map(dep => ({ name: dep.name, value: dep.id }))
+//   })
+
+// }
+
+
+// Ask the user for the employee's information.
+function addEmpl() {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        message: "What is the new Employee's First Name?",
+        name: "first_name",
+      },
+      {
+        type: "input",
+        message: "What is the new Employee's Last Name?",
+        name: "last_name",
+      },
+      {
+        type: "list",
+        message: "What is the employee's job title?",
+        name: "title",
+      },
+      {
+        type: "list",
+        message: "Who is the employee's manager?",
+        name: "manager",
+        choices: ['Ashley Rodriguez', 'John Doe', 'Sarah Lourd'],
+      }
+    ]).then(function (response) {
+      // console.log(response)
+      addEmployees(response)
+    })
+}
+
+function addEmployees(data) {
+  db.query('INSERT INTO employees (first_name, last_name, title, manager',
+  {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    role_id: data.title,
+    manager_id: data.manager
+  }, function (error, res) {
+    if (error) throw error;
+   })
+  };
+
 
 // app.get('/', (req, res) => {
 //     res.json({
