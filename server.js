@@ -1,12 +1,13 @@
 const inquirer = require('inquirer')
 const fs = require('fs');
 const express = require('express');
+//const mysql = require("mysql");
 // Import and require mysql2
 const mysql = require('mysql2');
-const { debugPort, mainModule } = require('process');
+//const { debugPort, mainModule } = require('process');
 const PORT = process.env.PORT || 3001;
 const app = express();
-
+require('console.table');
 
 // Express middleware
 app.use(express.urlencoded({ extended: true }));
@@ -27,7 +28,19 @@ const db = mysql.createConnection(
 
 
   db.connect(function (err) {
-    if (err) throw err;
+    if (err) {
+        console.log("unable to connect to db")
+    }
+    db.query('SELECT * FROM employees', (err, res) => {
+
+      if (err) {
+        console.log(err);
+      }
+      
+      console.table(res);
+    })
+
+
 
     promptQuestions();
   });
@@ -44,15 +57,16 @@ const db = mysql.createConnection(
                 'Add Employee',
                 'Remove Employee',
                 'Update Employee Role',
-                'Update Employee Manager']
+                'Update Employee Manager',
+                'Stop']
      }).then(function (res) {
         main(res.dbOptions)
      })
     
     }
 
-  function main(menuOptions) {
-    switch (menuOptions){
+  function main(choice) {
+    switch (choice) {
       case 'View All Employees':
           viewAllEmployees();
       break;
@@ -74,15 +88,29 @@ const db = mysql.createConnection(
       case 'Update Employee Manager':
         updateEmplManager();
       break;
+      case 'Stop':
+      end();
     }
   }
   
+function viewAllEmployees() {
+  db.query('SELECT * FROM employees', (err, res) => {
 
-app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World'
-    });
-  });
+    if (err) {
+      console.log(err);
+    }
+
+    console.table(res);
+   // console.log(rows);
+    promptQuestions()
+  })
+}
+
+// app.get('/', (req, res) => {
+//     res.json({
+//       message: 'Hello World'
+//     });
+//   });
 
 //   // Default response for any other request (Not Found)
 // app.use((req, res) => {
