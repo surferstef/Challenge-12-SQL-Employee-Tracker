@@ -1,23 +1,26 @@
+const inquirer = require('inquirer')
+const fs = require('fs');
 const express = require('express');
+// Import and require mysql2
+const mysql = require('mysql2');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 
 // Express middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 // Connect to database
 const db = mysql.createConnection(
     {
       host: 'localhost',
-      // Your MySQL username,
       user: 'root',
-      // Your MySQL password
       password: 'root#123',
-      database: 'election'
+      database: 'company'
     },
-    console.log('Connected to the election database.')
+    console.log('Connected to the company database.')
   );
   
 
