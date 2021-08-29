@@ -79,6 +79,9 @@ const db = mysql.createConnection(
       case 'Remove Employee':
         removeEmpl();
       break;
+      case 'View All Departments':
+        allDept();
+      break;
       case 'Update Employee Role':
         updateEmplRole();
       break;
@@ -102,14 +105,19 @@ function viewAllEmployees() {
   })
 }
 
-// function viewAllEmplDepartment() {
-//   db.query('SELECT *')
-//   connection.query("SELECT * from department", function (error, res) {
-//     showdepartments = res.map(dep => ({ name: dep.name, value: dep.id }))
-//   })
 
-// }
+const allDept = function () {
+  const sql = `SELECT * FROM department;`;
 
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.table(result);
+    form();
+  });
+};
 
 // Ask the user for the employee's information.
 function addEmpl() {
@@ -155,29 +163,6 @@ function addEmployees(data) {
   };
 
 
-// app.get('/', (req, res) => {
-//     res.json({
-//       message: 'Hello World'
-//     });
-//   });
-
-//   // Default response for any other request (Not Found)
-// app.use((req, res) => {
-//     res.status(404).end();
-//   });
-
-
-//   db.query(`SELECT * FROM employees`, (err, rows) => {
-//     console.log(rows);
-//   });
-
-//   // GET a single candidate
-// db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log(row);
-//   });
 
 
 function quitDb() {
